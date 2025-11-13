@@ -16,8 +16,7 @@
 | Revision date | Version # | Description                       | Author |
 |:--------------|:----------|:----------------------------------|:-------|
 | 10/29/2025    | 1.00      | Use Case Diagram 및 Description 작성 | 유민서    |
-| 11/04/2025    | 1.10      | (예시)Class Diagram 초안 작성           | OOO    |
-| 11/05/2025    | 1.20      | (예시)Class Diagram 상세 명세 양식 반영     | OOO    |
+| 11/07/2025    | 2.00      | 11월 1주차 검토 완료                     | 유민서    |
 
 ## = Contents =
 
@@ -52,11 +51,11 @@
 
 ## 2.1 Use Case Diagram
 
-> Use Case에 대한 설명(최종 제출 전 추가할 것임)
+&ensp;본 2장에서는 사용자가 시스템을 통해 수행할 수 있는 기능들을 식별하고 명세하는 Use Case Diagram과 Use Case Description을 제공한다.
 
-![Use Case Diagram](imgs/usecaseDiagram.png)
+&ensp;아래의 Use Case Diagram은 사용자의 흐름에 따라 시스템을 '메인 화면', '인게임', '결과 화면'의 세 가지 패키지(Package)로 나누어 구성하였다. 이를 통해 각 시나리오에서 사용자가 수행할 수 있는 주요 기능(Use Case)과, 특정 조건에서만 발생하는 확장 관계(<<extend>>)를 시각적으로 명확히 파악할 수 있다.
 
-다이어그램에 대한 설명(최종 제출 때 추가할 것임)
+![Use Case Diagram](imgs/usecaseDiagram.jpg)
 
 ## 2.2 Use Case Descriptions
 
@@ -541,7 +540,11 @@
 
 # 3. Class diagram
 
-> 본 목차에서는 클래스를 설명한다는 내용(최종 제출 때 추가할 것임)
+&ensp;본 3장은 시스템의 정적 구조를 모델링한 클래스 다이어그램을 제공한다. 시스템의 복잡성을 관리하고 설계를 명확히 하기 위해, 전체 클래스는 기능적 결합도를 기준으로 6개의 주요 패키지(Core, Player, UI, Monster 등)로 구분된다.
+
+&ensp;아래의 다이어그램은 각 클래스가 가지는 주요 속성(Attributes)과 연산(Operations)을 정의하고, 클래스 간의 상속, 집합, 의존 관계를 시각적으로 보여준다. 이어지는 절에서는 이 다이어그램을 바탕으로, 각 패키지의 핵심 클래스들을 상세히 기술한다.
+
+![Class Diagram](imgs/classDiagram.jpg)
 
 ## 3.2.1 Core Class
 
@@ -1071,39 +1074,39 @@
 
 # 4. Sequence diagram
 
-## 4.1 메인 화면
+&ensp;본 4장은 2장의 유스케이스 다이어그램(Use Case Diagram)에서 식별된 주요 기능들의 동적 상호작용을 시퀀스 다이어그램(Sequence Diagram)으로 기술한다.
 
-![Sequence Diagram 1](imgs/Diagram_Sequance/01.jpg)게임 시작 일시정지 
+&ensp;시퀀스 다이어그램은 특정 유스케이스가 실행되는 동안, 시스템을 구성하는 객체(Object) 또는 컴포넌트(Component)들이 시간의 흐름(Lifeline)에 따라 주고받는 메시지(Message)를 순차적으로 보여준다. 이를 통해 각 기능의 실행 흐름과 객체 간의 의존 관계를 명확히 파악할 수 있다.
 
-&ensp;위 그림은 사용자가 게임을 시작하는 Use case를 나타내는 Game Start Sequence diagram이다. Player가 Main menu Panel에 'Game Start'버튼을 누르면 MainMenuPanelManager에게 이벤트가 전달된다. MainMenuPanelManager는 GameManager에게 Start Game함수를 실행하라고 한다. 그러면 GameManager는 게임 플레이 씬으로 전환하고, 점수나 플레이어 체력 같은 시스템 값들을 초기화한다.
+&ensp;이어지는 절에서는 '게임 시작 및 일시정지', '보상 선택 및 처리', '캐릭터 이동', '능력치 강화' 등 13개의 핵심 시나리오에 대한 시퀀스 다이어그램과 상세 설명을 제공한다.
+
+![Sequence Diagram 1](imgs/Diagram_Sequance/01.jpg)
+
+&ensp;위 그림은 사용자가 게임을 시작하는 Use case를 나타내는 Game Start Sequence diagram이다. Player가 Main menu Panel에 'Game Start' 버튼을 누르면 MainMenuPanelManager에게 이벤트가 전달된다. MainMenuPanelManager는 GameManager에게 Start Game함수를 실행하라고 한다. 그러면 GameManager는 게임 플레이 씬으로 전환하고, 점수나 플레이어 체력 같은 시스템 값들을 초기화한다.
 
 ![Sequence Diagram 2](imgs/Diagram_Sequance/02.jpg)
 
-&ensp; 위 그림은 게임을 pause 했을때 나타나는 sequence diagram이다. 플레이어가 ESC를 누르면 InputManager가 매 프레임 검사하는 IsPausePressed를 통해 입력을 감지, 감지시 GameManager의 PauseGame(true)를 호출해 게임 진행을 멈춘다. 
+&ensp;위 그림은 게임을 pause 했을때 나타나는 sequence diagram이다. 플레이어가 ESC를 누르면 InputManager가 매 프레임 검사하는 IsPausePressed를 통해 입력을 감지, 감지시 GameManager의 PauseGame(true)를 호출해 게임 진행을 멈춘다. 
 동시에 InGamePanelManager의 ShowPausePanel(true)가 호출되어 일시정지 UI가 표시된다.
 플레이어가 계속하기 버튼을 클릭하면 OnResumeClick을 통해 GameManager의 ResumeGame이 실행되고, ShowPausePanel(false)로 일시정지 패널이 숨겨져 게임이 재개된다. 
 반대로 메인화면으로 버튼을 클릭하면 OnMainMenuClick이 GameManager의 GoToMainMenu를 호출하여 메인 화면으로 전환된다.
 
 ![Sequence Diagram 3](imgs/Diagram_Sequance/03.jpg)
 
-위 그림은 플레이어가 보상을 선택하는 상황의 sequence diagram이다. 플레이어가 게임을 하다가 레벨업(LevelUp)을 하면 PlayerManager가 OnPlayerLeveledUp 이벤트를 발생시킨다. GameManager가 이 이벤트를 구독하고 있다가 HandlePlayerLeveledUp()를 실행한다. 그리고 PauseGame(true)를 호출해 게임을 일시정지 시킨다. 그 후, RewardManager의 GenerateRewards를 통해 보상 목록을 생성하고, InGamePanelManager의 ShowRewardPanel(true)를 통해 보상 선택 패널을 표시한다. 플레이어가 보상 중 하나를 선택하면 RewardManage의 OnRewardSelected(data)가 호출된다. 그러면 PlayerManager가 AddEquipment(data)를 호출한다. 이 내부에서 EquipmentManager의 AddOrLevelUpEquipment(data)가 실행된다. 보상 처리가 끝나면 RewardManage는 OnRewardProcessFinished 이벤트를 발생시키고, GameManager는 HandleRewardFinished()를 호출한다. 그러면 RewardManag의 ShowRewardPanel(false)를 호출해서 보상 패널을 닫고, ResumeGame()을 호출해서 게임을 다시 시작한다.
+&ensp;위 그림은 플레이어가 보상을 선택하는 상황의 sequence diagram이다. 플레이어가 게임을 하다가 레벨업(LevelUp)을 하면 PlayerManager가 OnPlayerLeveledUp 이벤트를 발생시킨다. GameManager가 이 이벤트를 구독하고 있다가 HandlePlayerLeveledUp()를 실행한다. 그리고 PauseGame(true)를 호출해 게임을 일시정지 시킨다. 그 후, RewardManager의 GenerateRewards를 통해 보상 목록을 생성하고, InGamePanelManager의 ShowRewardPanel(true)를 통해 보상 선택 패널을 표시한다. 플레이어가 보상 중 하나를 선택하면 RewardManage의 OnRewardSelected(data)가 호출된다. 그러면 PlayerManager가 AddEquipment(data)를 호출한다. 이 내부에서 EquipmentManager의 AddOrLevelUpEquipment(data)가 실행된다. 보상 처리가 끝나면 RewardManage는 OnRewardProcessFinished 이벤트를 발생시키고, GameManager는 HandleRewardFinished()를 호출한다. 그러면 RewardManager의 ShowRewardPanel(false)를 호출해서 보상 패널을 닫고, ResumeGame()을 호출해서 게임을 다시 시작한다.
 
 ![Sequence Diagram 4](imgs/Diagram_Sequance/04.jpg)
 
-'보상을 새로 고침한다' 내용
-위 [그림 4-4]는 사용자가 보상을 새로 고침하는 Use case를 나타내는 Sequence diagram이다.
-Player가 보상을 받지 않고 ReRoll을 요청하면 GetRerollPrice로 굴리는 비용을 갱신한다.
+&ensp; 위 그림은 사용자가 보상을 새로 고침하는 Use case를 나타내는 Sequence diagram이다.
+Player가 보상을 받지 않고 ReRoll을 요청하면 GetRerollPrice로 보상 새고고침 비용을 갱신한다.
 CanSpendGold(rerollPrice)로 현재 지불이 가능한지 결과를 받아오고
 현재 Player의 재화가 충분하고 지불이 가능하면 SpendGold(rerollPrice)로 주사위를 다시 굴리고 GenerateRewards로 보상을 다시 생성한다.
 
-
 ![Sequence Diagram 5](imgs/Diagram_Sequance/05.jpg)
 
-위 [그림 4-5]는 사용자가 보상화면을 건너뛰는 Use case를 나타내는 Sequence diagram이다.
+&ensp;위 그림은 사용자가 보상화면을 건너뛰는 Use case를 나타내는 Sequence diagram이다.
 
-Player가 보상을 받지않고 건너뛰기위해 '스킵' 버튼을 누르면 Player는 OnSikpPressed 신호를 RewardManager에게 보낸다. 신호를 받은 RewardManager에서는 InGamePanelManager에게는 ShowRewardPanel 신호를 보내 화면에 띄워진 보상 화면을 닫고 GameManager에게는 HandleRewardFinished 신호를 보내 보상 이벤트를 종료한다. 그 후 GainExp 신호를 PlayerManager에게 보내 보상을 건너뛰기 했을 때의 대체 보상으로 플레이어에게 경험치를 준다.
-
-## 4.2 인게임
+Player가 보상을 받지않고 건너뛰기위해 '스킵' 버튼을 누르면 Player는 OnSkipPressed 신호를 RewardManager에게 보낸다. 신호를 받은 RewardManager에서는 InGamePanelManager에게는 ShowRewardPanel 신호를 보내 화면에 띄워진 보상 화면을 닫고 GameManager에게는 HandleRewardFinished 신호를 보내 보상 이벤트를 종료한다. 그 후 GainExp 신호를 PlayerManager에게 보내 보상을 건너뛰기 했을 때의 대체 보상으로 플레이어에게 경험치를 준다.
 
 ![Sequence Diagram 6](imgs/Diagram_Sequance/06.jpg)
 
@@ -1116,8 +1119,8 @@ InputManager로부터 방향 값을 전달받은 PlayerManager는 이 direction 
 
 ![Sequence Diagram 7](imgs/Diagram_Sequance/07.jpg)
 
-&ensp;위 그림은 플레이어가 영구 능력치를 강화할 때를 나타내는 Squence diagram이다. 플레이어가 특정 능력치를 강화하기 위해 UpgradeStat을 요청한다. 이 요청은 UpgradeManager에게 전달되어 활성화된다. UpgradeManager는 먼저 해당 능려기를 강화하는데 필요한 재화 비용을 계산하고, 플레이어가 충분한 재화가 있는지 확인한다. 여기서 플레이어의 재화가 충분하고 최대 레벨이 아닐 경우 UpGradeManager가 PlayerManager에게 재화를 쓰라고 한다. 이후 UpGradeManager는 선택 된 스텟의 레벨을 1 증가시키고 변경 사항을 저장한다. 재화가 부족한 경우
-UpgradeManager가 플레이어에게 재화가 부족하다는 UI를 표시하고 이미 최대 레벨일 경우 이미 최대 레벨이라는 UI표시한다.
+&ensp;위 그림은 플레이어가 영구 능력치를 강화할 때를 나타내는 Sequence diagram이다. 플레이어가 특정 능력치를 강화하기 위해 UpgradeStat을 요청한다. 이 요청은 UpgradeManager에게 전달되어 활성화된다. UpgradeManager는 먼저 해당 능려기를 강화하는데 필요한 재화 비용을 계산하고, 플레이어가 충분한 재화가 있는지 확인한다. 여기서 플레이어의 재화가 충분하고 최대 레벨이 아닐 경우 UpGradeManager가 PlayerManager에게 재화를 쓰라고 한다. 이후 UpGradeManager는 선택 된 스텟의 레벨을 1 증가시키고 변경 사항을 저장한다. 재화가 부족한 경우
+UpgradeManager가 플레이어에게 재화가 부족하다는 UI를 표시하고 이미 최대 레벨일 경우 이미 최대 레벨이라는 UI를 표시한다.
 
 ![Sequence Diagram 8](imgs/Diagram_Sequance/08.jpg)
 
@@ -1125,33 +1128,31 @@ UpgradeManager가 플레이어에게 재화가 부족하다는 UI를 표시하�
 
 ![Sequence Diagram 9](imgs/Diagram_Sequance/09.jpg)
 
-위 그림은 플레이어가 설정을 변경하는 상황의 sequence diagram이다. 플레이어가 '설정' 버튼을 누르면 MainMenuPanelManager의 ShowSettingPanel을 호출하여 설정 UI를 표시한다. 플레이어가 master volume을 조절하면 SettingManager의 SetMasterVolume(level)이 호출되고, 이는 AduioManager의 SetMasterVolume(level)을 호출한다. 플레이어가 sfx volume을 조절하면 SettingManager의 SetSfxVolume(level)이 호출되고, 이는 AduioManager의 SetSfxVolume(level)을 호출한다. 플레이어가 bgm volume을 조절하면 SettingManager의 SetBgmVolume(level)이 호출되고, 이는 AduioManager의 SetBgmVolume(level)을 호출한다. 플레이어가 resolution을 조절하면 SettingManager의 ApplyResoulution을 호출한다.
+&ensp;위 그림은 플레이어가 설정을 변경하는 상황의 Sequence diagram이다. 플레이어가 '설정' 버튼을 누르면 MainMenuPanelManager의 ShowSettingPanel을 호출하여 설정 UI를 표시한다. 플레이어가 master volume을 조절하면 SettingManager의 SetMasterVolume(level)이 호출되고, 이는 AudioManager의 SetMasterVolume(level)을 호출한다. 플레이어가 sfx volume을 조절하면 SettingManager의 SetSfxVolume(level)이 호출되고, 이는 AudioManager의 SetSfxVolume(level)을 호출한다. 플레이어가 bgm volume을 조절하면 SettingManager의 SetBgmVolume(level)이 호출되고, 이는 AudioManager의 SetBgmVolume(level)을 호출한다. 플레이어가 resolution을 조절하면 SettingManager의 ApplyResolution을 호출한다.
 
 ![Sequence Diagram 10](imgs/Diagram_Sequance/10.jpg)
 
-위 그림은 플레이어가 도감을 초기화하는 상황의 sequence diagram이다. 플레이어가 설정 화면에서 '도감 초기화' 버튼을 누르면 SettingManager의 OnResetCodexClick이 호출되고 CodexManager의 ResetCodex를 호출하여 도감을 초기화한다.
+&ensp;위 그림은 플레이어가 도감을 초기화하는 상황의 Sequence diagram이다. 플레이어가 설정 화면에서 '도감 초기화' 버튼을 누르면 SettingManager의 OnResetCodexClick이 호출되고 CodexManager의 ResetCodex를 호출하여 도감을 초기화한다.
 
 ![Sequence Diagram 11](imgs/Diagram_Sequance/11.jpg)
 
-위 [그림 4-11]은 사용자가 아이템을 사용하는 Use case를 나타내는 Sequence diagram이다.
+&ensp;위 그림은 사용자가 아이템을 사용하는 Use case를 나타내는 Sequence diagram이다.
 
-게임 플레이 중 얻은 아이템은 PlayerManager가 보낸 Additem 신호를 통해 ItemManager가 관리한다. 게임 플레이 중 사용자가 아이템을 사용하기위해 GetItemUseInput 신호를 보내면 UseItem, ActivateItem 신호로 PlayerManager를 거쳐 ItemManager가 관리하고 있던 아이템이 사용된다. 아이템 사용 신호를 받은 후 ItemManager가 Item에게 Activate 신호를 보내면 Item에서 그 아이템의 durability를 확인한다. 만약 durability가 0보다 크면 정상적으로 아이템이 사용되고, 그렇지 않으면 아이템이 사용되지 않는다. 아이템이 사용된 경우에 UpdateCooldown을 통해 아이템의 쿨타임을 적용하고 durability를 1 감소시킨 후, 사용된 아이템에 따른 효과를 PlayerManager에서 반영한다.
+게임 플레이 중 얻은 아이템은 PlayerManager가 보낸 AddItem 신호를 통해 ItemManager가 관리한다. 게임 플레이 중 사용자가 아이템을 사용하기위해 GetItemUseInput 신호를 보내면 UseItem, ActivateItem 신호로 PlayerManager를 거쳐 ItemManager가 관리하고 있던 아이템이 사용된다. 아이템 사용 신호를 받은 후 ItemManager가 Item에게 Activate 신호를 보내면 Item에서 그 아이템의 durability를 확인한다. 만약 durability가 0보다 크면 정상적으로 아이템이 사용되고, 그렇지 않으면 아이템이 사용되지 않는다. 아이템이 사용된 경우에 UpdateCooldown을 통해 아이템의 쿨타임을 적용하고 durability를 1 감소시킨 후, 사용된 아이템에 따른 효과를 PlayerManager에서 반영한다.
 
 ![Sequence Diagram 12](imgs/Diagram_Sequance/12.jpg)
 
-&ensp;위 그림은 플레이어가 결과 화면에서 게임을 재시작 할 때를 나타내는 squence diagram이다. 플레이어가 InGAME Panel의 'Restart' 버튼을 누르면 InGamePanelManager가 이벤트를 받아 GameManager에게 Restart 함수를 실행 시킨다. GameManager는 열려있는 결과 화면창을 닫고 시스템을 초기화한 이후에 게임씬을 다시 시작한다.
+&ensp;위 그림은 플레이어가 결과 화면에서 게임을 재시작 할 때를 나타내는 Sequence diagram이다. 플레이어가 InGAME Panel의 'Restart' 버튼을 누르면 InGamePanelManager가 이벤트를 받아 GameManager에게 Restart 함수를 실행 시킨다. GameManager는 열려있는 결과 화면창을 닫고 시스템을 초기화한 이후에 게임씬을 다시 시작한다.
 
 ![Sequence Diagram 13](imgs/Diagram_Sequance/13.jpg)
 
-&ensp;위 그림은 플레이어가 결과 화면에서 메인 메뉴로 넘어갈 떄를 나타내는 squence diagram이다. 플레이어가 InGamePanel의 'Main menu' 버튼을 누르면 InGamePanelManager가 이벤트를 받아 GameManager에게 GoToMain 함수를 실행시킨다.GameManager는 현재 게임씬에서 메인 화면씬으로 전환한다.
+&ensp;위 그림은 플레이어가 결과 화면에서 메인 메뉴로 넘어갈 떄를 나타내는 Sequence diagram이다. 플레이어가 InGamePanel의 'Main menu' 버튼을 누르면 InGamePanelManager가 이벤트를 받아 GameManager에게 GoToMain 함수를 실행시킨다.GameManager는 현재 게임씬에서 메인 화면씬으로 전환한다.
 
 ---
 
 # 5. State machine diagram
 
-> 5장은 게임 시스템 State machine diagram을 설명한다. 아래 그림은 본 프로젝트에서 제작한 게임 시스템의 State machine diagram이다.
-
-![state machine diagram](imgs/StateDiagram.png)
+![state machine diagram](imgs/stateDiagram.jpg)
 
 
 * 각 State는 게임에서 어떤 Scene을 보여주고 있는지에 대한 상태이고, Game Scene 내에서는 플레이어의 행동에 따라 캐릭터의 상태가 어떻게 바뀌는지 나타낸다.
@@ -1165,9 +1166,7 @@ UpgradeManager가 플레이어에게 재화가 부족하다는 UI를 표시하�
 
 # 6. User interface prototype
 
-> * 6장은 구현할 UI의 구조와 UI 안의 각 구성요소를 설명한다. 프로토타입이기 때문에 UI 디자인은 일부 달라질 수 있지만 내용 및 구성은 거의 동일하다.
-
-
+&ensp; 본 6장은 구현할 UI의 구조와 UI 안의 각 구성요소를 설명한다. 프로토타입이기 때문에 UI 디자인은 일부 달라질 수 있지만 내용 및 구성은 거의 동일하다.
 
 ## 6.1 타이틀 화면 (Title)
 
@@ -1212,14 +1211,14 @@ UpgradeManager가 플레이어에게 재화가 부족하다는 UI를 표시하�
 ## 6.7 인게임 기본 화면
 *아래 그림은 게임을 시작했을 때 나오는 인게임 UI프로토타입이다.
 
-![Ingame_Base](imgs/UI_Prototype/In_Game_Base.png)
+![InGame_Base](imgs/UI_Prototype/In_Game_Base.png)
 
 &ensp;인게임 UI 프로토타입을 보여준다. 좌측 상단에는 플레이어의 체력(HP)과 경험치(EXP)를 나타내는 바가 배치되어 있다. 그 하단에는 획득한 장비를 나타내는 6개의 슬롯 과 소모성 아이템을 표시하는 3개의 슬롯이 나란히 정렬되어 있다. 우측 상단에는 타이머가 남은 시간을 표시하며, 그 아래로는 플레이어가 보유한 총 재화와 몬스터 처치 수가 실시간으로 집계되어 나타난다.
 
 ## 6.8 인게임 Pause 화면
 * 아래 그림은 인게임 진행중에 ESC를 눌렀을 때 나오는 UI 프로토타입이다.
 
-![Ingame_Pause](imgs/UI_Prototype/In_Game_Pause.png)
+![InGame_Pause](imgs/UI_Prototype/In_Game_Pause.png)
 
 &ensp;ESC 키를 누르면 화면이 어두워지며 게임이 일시 정지되고, 위 그림과 같은 메뉴 창이 나타난다. 좌측에는 '캐릭터 이미지'와 그 하단에 플레이어의 '종합 능력치(스탯)'가 표시된다. 중앙 상단에는 플레이어가 착용한 '장비' 슬롯이 있으며, 각 장비 아이콘에 마우스를 올리면 '장비 설명'란에 상세 정보가 나타난다. 중앙 하단에는 현재 '진행 시간'이 표시된다. 우측에는 게임을 '계속'하거나, '설정' 창을 열거나, 게임을 '종료'하고 시작 화면으로 돌아갈 수 있는 메뉴 버튼이 제공된다.
 
@@ -1306,10 +1305,15 @@ UpgradeManager가 플레이어에게 재화가 부족하다는 UI를 표시하�
 
 # 8. Glossary
 
-* **HUD (Heads-Up Display):** 게임 플레이 중 화면에 상시 표시되는 UI (체력 바, 타이머 등).
-* **Prefab:** Unity 엔진에서 사용되는, 미리 구성된 게임 오브젝트의 원본 템플릿.
+| 용어                    | 설명                                                        |
+|:----------------------|:----------------------------------------------------------|
+| **HUD**               | (Heads-Up Display) 게임 플레이 중 화면에 상시 표시되는 UI (체력 바, 타이머 등). |
+| **Prefab**            | Unity 엔진에서 사용되는, 미리 구성된 게임 오브젝트의 원본 템플릿.                  |
+| **Scene**             | Unity 엔진에서 게임의 특정 화면이나 레벨을 구성하는 단위.                       |
+| **Roguelike (로그라이크)** | 게임의 장르 중 하나로, 본 프로젝트가 지향하는 탑다운 액션 게임의 기반이 된다.             |
 
 ---
+
 # 9. References
 
 * Unity 공식 문서 - https://docs.unity3d.com/
