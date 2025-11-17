@@ -1,104 +1,137 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    public enum TypeInfo { hpBar, expBar, bossHpBar, timerText, goldText, killCountText }
-    public TypeInfo type;
-    public GameObject questInfoPanel;
+    #region Serialized Fields
+    [Header("Dependencies")]
+    [SerializeField] private PlayerManager playerManager; // 인스펙터에서 연결
 
-    TextMeshProUGUI text;
-    Slider slider;
+    [Header("UI Elements (S1)")]
+    [SerializeField] private Slider hpSlider; // (D-1.a)
+    [SerializeField] private Slider expSlider; // (D-1.a)
+    [SerializeField] private TextMeshProUGUI timerText; // (D-1.b)
 
-    private void Awake()
-    {
-        text = GetComponent<TextMeshProUGUI>();
-        slider = GetComponent<Slider>();
-    }
+    [Header("UI Elements (S3)")]
+    [SerializeField] private TextMeshProUGUI goldText; // (D-1.b)
+    [SerializeField] private TextMeshProUGUI killCountText; // (D-1.b)
+    [SerializeField] private GameObject bossHpBarPanel; // (D-1.d)
+    [SerializeField] private GameObject questInfoPanel; // (D-1.d)
+    
+    // (S3, D-1.c) 장비/아이템 슬롯 UI 참조
+    // [SerializeField] private Image[] equipmentSlots;
+    // [SerializeField] private Image[] itemSlots;
+    #endregion
 
+    #region Unity LifeCycle
     private void Start()
     {
-        // PlayerManager hp �̺�Ʈ ����
-        if (type == TypeInfo.hpBar)
-            PlayerManager.Instance.OnHpChanged += UpdateHpBar;
+        // 안전 장치
+        if (playerManager == null)
+        {
+            Debug.LogError("HUDManager: PlayerManager가 인스펙터에 할당되지 않았습니다!");
+            return;
+        }
+
+        // --- 이벤트 구독 ---
+
+        // [Sprint 1]
+        // GameManager(싱글톤)의 시간 이벤트 구독
+        GameManager.Instance.OnTimeChanged += UpdateTimerText;
+        // PlayerManager(SerializeField)의 HP 이벤트 구독
+        playerManager.OnHpChanged += UpdateHpBar;
+        
+        // [Sprint 2 & 3]
+        // PlayerManager의 EXP, Gold, Kill 이벤트 구독
+        playerManager.OnExpChanged += UpdateExpBar;
+        playerManager.OnGoldChanged += UpdateGoldText;
+        playerManager.OnKillCountChanged += UpdateKillCountText;
+
+        // (S3) [패키지 3]의 이벤트도 구독해야 함
+        // SpawnManager.OnBossSpawned += ShowBossHpBar;
+        // QuestManager.OnQuestStarted += ToggleQuestInfo;
     }
 
     private void OnDestroy()
     {
-        // �̺�Ʈ ����
-        if (type == TypeInfo.hpBar)
-            PlayerManager.Instance.OnHpChanged -= UpdateHpBar;
-    }
+        // --- (컨벤션 1-3) 이벤트 구독 해제 (메모리 누수 방지) ---
+        
+        // GameManager가 null이 아닌지 확인 (게임 종료 시 Instance가 먼저 파괴될 수 있음)
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnTimeChanged -= UpdateTimerText;
+        }
 
-    // HP Bar ������Ʈ
+        if (playerManager != null)
+        {
+            playerManager.OnHpChanged -= UpdateHpBar;
+            playerManager.OnExpChanged -= UpdateExpBar;
+            playerManager.OnGoldChanged -= UpdateGoldText;
+            playerManager.OnKillCountChanged -= UpdateKillCountText;
+        }
+        
+        // (S3) [패키지 3] 이벤트 구독 해제
+        // SpawnManager.OnBossSpawned -= ShowBossHpBar;
+        // QuestManager.OnQuestStarted -= ToggleQuestInfo;
+    }
+    #endregion
+
+    #region Private Methods (Event Handlers)
+    // (컨벤션 1-3)
+    // Update()가 아닌, 이벤트가 "방송"될 때만 호출되는 함수들입니다.
+
+    /// <summary>
+    /// (S1, D-1.a) PlayerManager.OnHpChanged 이벤트가 호출
+    /// </summary>
     private void UpdateHpBar(float currentHp, float maxHp)
     {
-        slider.value = currentHp / maxHp;
+        if (hpSlider != null)
+            hpSlider.value = currentHp / maxHp;
     }
 
-    private void Update()
+    /// <summary>
+    /// (S2, D-1.a) PlayerManager.OnExpChanged 이벤트가 호출
+    /// </summary>
+    private void UpdateExpBar(float currentExp, float maxExp)
     {
-        switch (type)
-        {
-            case TypeInfo.expBar:
-                UpdateExpBar();
-                break;
-
-            case TypeInfo.timerText:
-                UpdateTimer();
-                break;
-
-            case TypeInfo.goldText:
-                UpdateGold();
-                break;
-
-            case TypeInfo.killCountText:
-                UpdateKillCount();
-                break;
-
-            case TypeInfo.bossHpBar:
-                
-                break;
-        }
-    }
-  
-    void UpdateExpBar() 
-    {
-        int currentExp = PlayerManager.Instance.currentExp;
-        int maxExp = PlayerManager.Instance.maxExp;
-        slider.value = (float)currentExp / maxExp;
+        if (expSlider != null)
+            expSlider.value = currentExp / maxExp;
     }
 
-    private void UpdateTimer()
+    /// <summary>
+    /// (S1, D-1.b) GameManager.OnTimeChanged 이벤트가 호출
+    /// </summary>
+    private void UpdateTimerText(float time)
     {
-        float t = GameManager.Instance.gameTime;
-
-        int minutes = Mathf.FloorToInt(t / 60f);
-        int seconds = Mathf.FloorToInt(t % 60f);
-
-        text.text = $"{minutes:00}:{seconds:00}";
+        if (!timerText) return;
+        
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+        timerText.text = $"{minutes:00}:{seconds:00}";
     }
-
-    void UpdateGold()
-    {
-        int currentGold = PlayerManager.Instance.gold;
-        text.text = currentGold.ToString();
-    }
-
-    void UpdateKillCount()
-    {
-        int currentKillcount = PlayerManager.Instance.killCount;
-        text.text = currentKillcount.ToString();
-    }
-
-    void ShowBossHpBar()
-    {
     
-    }
-
-    void ToggleQuestInfo() 
+    /// <summary>
+    /// (S3, D-1.b) PlayerManager.OnGoldChanged 이벤트가 호출
+    /// </summary>
+    private void UpdateGoldText(int amount)
     {
-    
+        if (goldText != null)
+            goldText.text = amount.ToString();
     }
+    
+    /// <summary>
+    /// (S3, D-1.b) PlayerManager.OnKillCountChanged 이벤트가 호출
+    /// </summary>
+    private void UpdateKillCountText(int amount)
+    {
+        if (killCountText != null)
+            killCountText.text = amount.ToString();
+    }
+    
+    // (S3, D-1.d)
+    // private void ShowBossHpBar(...) { ... }
+    // private void ToggleQuestInfo(...) { ... }
+    #endregion
 }

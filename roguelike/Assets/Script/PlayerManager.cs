@@ -8,6 +8,10 @@ public class PlayerManager : MonoBehaviour
     #region Events
     // (Sprint 1, B-1.a) HP 변경 이벤트 정의 (HUDManager가 구독할 대상)
     public event Action<float, float> OnHpChanged;
+    public event Action<float, float> OnExpChanged;
+    // 재화, 킬 카운트 변경 이벤트 정의
+    public event Action<int> OnGoldChanged;
+    public event Action<int> OnKillCountChanged;
     
     // (Sprint 2, B-1.b) 레벨 업 이벤트를 정의합니다. (RewardManager가 구독할 대상)
     public event Action OnPlayerLeveledUp;
