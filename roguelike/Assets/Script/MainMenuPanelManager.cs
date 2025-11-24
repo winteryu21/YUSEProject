@@ -20,13 +20,14 @@ public class MainMenuPanelManager : MonoBehaviour
     #region life Cycle
     void Start()
     {
+        AudioManager.Instance.PlayBGM("BGM");
       CheckAndShowTitlePanel();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
         if (press_Anykey == null) return;
         float newAlpha = AlphaChange();
         BlinkText(newAlpha);
@@ -34,11 +35,6 @@ public class MainMenuPanelManager : MonoBehaviour
         ShowLobbyPanel();
     }
     #endregion
-
-
-
-
-
 
     #region Button Action
 
@@ -63,16 +59,17 @@ public class MainMenuPanelManager : MonoBehaviour
     //아무키나 누르면 로비로 넘어가기
     public void ShowLobbyPanel()
     {
-        if(Input.anyKeyDown && MainPanel.activeSelf)
+        if(Input.anyKeyDown && MainPanel.activeSelf && !LobbyPanel.activeSelf)
         {
             MainPanel.SetActive(false);
-
+            LobbyPanel.SetActive(true);
         }
     }
 
     //강화 패널 토글
     public void ToggleUpgradePanel()
-    {
+    { 
+        AudioManager.Instance.PlaySfx("Select");
        UpgradePanel.SetActive(!UpgradePanel.activeSelf);
     }
 
@@ -80,12 +77,14 @@ public class MainMenuPanelManager : MonoBehaviour
     //옵션 패널 토글
     public void ToggleOptionPanel()
     {
+        AudioManager.Instance.PlaySfx("Select");
         OptionPanel.SetActive(!OptionPanel.activeSelf);  
     }
 
     // 도감 패널 토글
     public void ToggleCodexPanel()
     {
+        AudioManager.Instance.PlaySfx("Select");
         CodexPanel.SetActive(!CodexPanel.activeSelf);
     }
     #endregion
