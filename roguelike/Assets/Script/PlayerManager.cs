@@ -34,6 +34,9 @@ public class PlayerManager : MonoBehaviour
     public int Level { get => _level; }
     public int CurrentExp { get => _currentExp; }
     public int Gold { get => _gold; }
+
+    //위치
+    public Vector2 Player_Position =>transform.position;
     #endregion
     
     #region Serialized Fields

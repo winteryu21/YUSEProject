@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
     #region Properties
     // (A-2.a) 외부에서 현재 상태를 읽을 수 있도록 프로퍼티 제공
     public GameState CurrentState { get => _currentState; }
+
+
+    public PlayerManager Player => _playerManager;
     public float GameTime { get => _gameTime; }
     #endregion
 

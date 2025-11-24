@@ -10,6 +10,9 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] protected float moveSpeed = 2f;
     #endregion
 
+
+    public GameObject expOrbPrefab;
+
     #region Private Fields
     protected float _currentHp;
     protected Transform _target; // 플레이어(추적 대상)
@@ -28,6 +31,7 @@ public abstract class Monster : MonoBehaviour
             // 매 프레임 타겟 방향으로 이동
             Move(_target.position);
         }
+        TakeDamage(1);
     }
     #endregion
 
@@ -55,7 +59,28 @@ public abstract class Monster : MonoBehaviour
     public virtual void Die()
     {
         // 사망 처리 (보상 드롭 등 나중에 추가하기)
+        DropExpOrb();
+        UpGold(1);
         Destroy(gameObject);
     }
+
+    public void DropExpOrb()
+    {
+        if(expOrbPrefab != null)
+        {
+            Instantiate(expOrbPrefab,transform.position, Quaternion.identity);
+        }
+    }
+
+    //일단 죽으면 플레이어의 골드 증가
+    public void UpGold(int amount)
+    {
+        if(GameManager.Instance !=null)
+        {
+            GameManager.Instance.Player.GainGold(amount);
+        }
+    }
     #endregion
+
+
 }
