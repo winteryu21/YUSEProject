@@ -15,32 +15,31 @@
            ┃
            ┣━━ 📜 01_Scripts/      # C# 소스 코드
            ┃    ┣━━ ⚙️ _Core/      # 게임 매니저 (GameManager, Audio, Save 등)
-           ┃    ┣━━ 👤 Player/     # 플레이어 제어 및 스탯
            ┃    ┣━━ 👾 Enemies/    # 몬스터 AI 및 스폰 로직
            ┃    ┣━━ ⚔️ Gameplay/   # 핵심 메커니즘 (경험치 구슬, 보상 등)
            ┃    ┣━━ 🎒 Loot/       # 장비, 아이템 데이터 및 로직
-           ┃    ┣━━ 🖥️ UI/         # HUD, 메뉴, 패널 제어
-           ┃    ┗━━ 🧪 Test/       # 테스트 및 디버그용
+           ┃    ┣━━ 👤 Player/     # 플레이어 제어 및 스탯
+           ┃    ┣━━ 🧪 Test/       # 테스트 및 디버그용
+           ┃    ┗━━ 🖥️ UI/         # HUD, 메뉴, 패널 제어
            ┃
            ┣━━ 🧱 02_Prefabs/      # 프리팹 (재사용 가능한 게임 오브젝트)
-           ┃    ┣━━ 👤 Player/     # 플레이어 프리팹
+           ┃    ┣━━ 💎 Acquisition/# 획득 가능 오브젝트 (경험치 구슬 등)
            ┃    ┣━━ 👾 Enemies/    # 적 캐릭터 프리팹
-           ┃    ┣━━ 🎁 Loot/       # 장비 및 아이템 프리팹 (GameObject)
            ┃    ┣━━ 🌳 Environment/# 맵, 벽, 배경 요소
            ┃    ┣━━ ✨ FX/         # 이펙트, 파티클
-           ┃    ┣━━ 💎 Acquisition/# 획득 가능 오브젝트 (경험치 구슬 등)
+           ┃    ┣━━ 🎁 Loot/       # 장비 및 아이템 프리팹 (GameObject)
+           ┃    ┣━━ 👤 Player/     # 플레이어 프리팹
            ┃    ┗━━ ⚙️ System/     # 시스템 프리팹 (매니저, UI 캔버스 등)
            ┃
            ┣━━ 🎨 03_Arts/         # 리소스 에셋
-           ┃    ┣━━ 🖼️ Sprites/    # 2D 이미지, 아이콘, 도트
+           ┃    ┣━━ 🎵 Audio/      # BGM, SFX
            ┃    ┣━━ 🔤 Fonts/      # 폰트 파일
-           ┃    ┗━━ 🎵 Audio/      # BGM, SFX
+           ┃    ┗━━ 🖼️ Sprites/    # 2D 이미지, 아이콘, 도트
            ┃
-           ┣━━ 🔧 Settings/        # URP 및 렌더링 설정
-           ┃
-           ┣━━ 📦 TextMesh Pro/    # (Unity System) 텍스트 렌더링 에셋
-           ┣━━ 📦 UI Toolkit/      # (Unity System) UI 툴킷 리소스
-           ┗━━ 🎮 InputSystem_Actions  # 입력 키 매핑 설정
+           ┣━━ 🎮 InputSystem_Actions  # 입력 키 매핑 설정
+           ┣━━ 🔧 Settings/            # URP 및 렌더링 설정
+           ┣━━ 📦 TextMesh Pro/        # (Unity System) 텍스트 렌더링 에셋
+           ┗━━ 📦 UI Toolkit/          # (Unity System) UI 툴킷 리소스
 ```
 
 ---
