@@ -20,6 +20,13 @@ public class TestEquip : Equipment
     #endregion
 
     #region Unity LifeCycle
+    
+    private void Start()
+    {
+        if (visualSprite != null)
+            visualSprite.localPosition = new Vector3(distanceFromPlayer, 0, 0);
+    }
+
     public override void Initialize(PlayerManager player)
     {
         base.Initialize(player);
@@ -36,19 +43,27 @@ public class TestEquip : Equipment
         base.Update(); // 부모의 쿨다운 로직 등 실행
         
         RotateAroundPlayer();
+
+        if (visualSprite != null)
+            visualSprite.localRotation = Quaternion.identity;
     }
+//     private void LateUpdate()
+// {
+//     if (visualSprite != null)
+//         visualSprite.rotation = Quaternion.identity;
+// }
 
     // 충돌 감지 (반드시 Collider2D가 있어야 함, IsTrigger 체크 권장)
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // (패키지 3) Monster 태그를 가진 오브젝트인지 확인
         // (Monster 스크립트는 IDamageable 인터페이스를 구현하는 것이 좋음)
-        if (collision.CompareTag("Monster"))
+        if (collision.CompareTag("Enemy"))
         {
             // Monster 스크립트 가져오기
             // (컨벤션 1-4) GetComponent는 가급적 캐싱하면 좋지만, 
             // 동적으로 충돌하는 대상은 그때그때 가져와야 합니다.
-            Monster monster = collision.GetComponent<Monster>();
+            Monster monster = collision.GetComponentInParent<Monster>();
             
             if (monster != null)
             {
@@ -75,7 +90,9 @@ public class TestEquip : Equipment
         // 중심축이 회전하면 위성처럼 돕니다.
         
         float rotationStep = rotationSpeed * Time.deltaTime;
-        transform.Rotate(Vector3.forward, rotationStep);
+        transform.Rotate(Vector3.back * rotationStep);
+        
+        //transform.Rotate(Vector3.back * rotationSpeed * Time.deltaTime);
     }
     #endregion
 
