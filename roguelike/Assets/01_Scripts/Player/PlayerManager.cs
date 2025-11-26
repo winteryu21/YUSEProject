@@ -165,9 +165,17 @@ public class PlayerManager : MonoBehaviour
         // 재화 획득 후 UI 갱신 알림
         OnGoldChanged?.Invoke(_gold);
     }
-    
+
+    /// <summary>
+    /// 장비 선택 시 호출되는 더미 함수
+    /// </summary>
+    public void AddEquipment(Equipment data)
+    {
+
+    }
+
     // public void SpendGold(int amount) { ... }
-    // public void AddEquipment(Equipment equipment) { ... }
+
     #endregion
 
     #region Private Methods
@@ -219,12 +227,6 @@ public class PlayerManager : MonoBehaviour
         OnPlayerLeveledUp?.Invoke(); 
     }
 
-    /// <summary>
-    /// 장비 선택 시 호출되는 더미 함수
-    /// </summary>
-    public void AddEquipment(Equipment data) 
-    {
-    
-    }
+ 
     #endregion
 }
