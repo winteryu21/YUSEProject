@@ -16,8 +16,6 @@ public class InGamePanelManager : MonoBehaviour
     // Sprint 1에서 UI 아티스트가 만든 프리팹을 이곳에 연결합니다.
     [Header("UI Panels")]
     [SerializeField]
-    private GameObject background;
-    [SerializeField]
     private GameObject pausePanel;
     [SerializeField]
     private GameObject rewardPanel;
@@ -39,7 +37,6 @@ public class InGamePanelManager : MonoBehaviour
         Debug.Log("InGamePanelManager: 일시정지 패널 " + (show ? "표시" : "숨김"));
         if (pausePanel != null)
         {
-            background.SetActive(show);
             pausePanel.SetActive(show);
         }
     }
@@ -52,7 +49,6 @@ public class InGamePanelManager : MonoBehaviour
         Debug.Log("InGamePanelManager: 보상 패널 " + (show ? "표시" : "숨김"));
         if (rewardPanel != null) 
         { 
-            background.SetActive(show);
             rewardPanel.SetActive(show);
         }
             
@@ -66,7 +62,6 @@ public class InGamePanelManager : MonoBehaviour
         Debug.Log("InGamePanelManager: 게임 오버 패널 " + (show ? "표시" : "숨김"));
         if (gameOverPanel != null)
         {
-            background.SetActive(show);
             gameOverPanel.SetActive(show);
         }
            
@@ -80,7 +75,6 @@ public class InGamePanelManager : MonoBehaviour
         Debug.Log("InGamePanelManager: 게임 클리어 패널 " + (show ? "표시" : "숨김"));
         if (gameClearPanel != null)
         {
-            background.SetActive(show);
             gameClearPanel.SetActive(show);
         }
 
