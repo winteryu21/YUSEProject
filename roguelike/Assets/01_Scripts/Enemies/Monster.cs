@@ -42,7 +42,7 @@ public abstract class Monster : MonoBehaviour
             Move(_target.position);
         }
 
-        TakeDamage(1); //풀링 테스트 시 순식간에 죽길래 비활성화 하고 테스트 했습니다.
+        //TakeDamage(1); //풀링 테스트 시 순식간에 죽길래 비활성화 하고 테스트 했습니다.
     }
 
     #endregion
