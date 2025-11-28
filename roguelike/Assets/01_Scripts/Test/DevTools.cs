@@ -13,6 +13,9 @@ public class DevTools : MonoBehaviour
     
     [Header("UI")]
     [SerializeField] private GameObject debugPanel;
+
+    [Header("Weapon")] 
+    [SerializeField] private WeaponData testWeapon;
     #endregion
 
     #region Private Fields
@@ -112,6 +115,25 @@ public class DevTools : MonoBehaviour
         _isSpeedUp = !_isSpeedUp;
         Time.timeScale = _isSpeedUp ? 2.0f : 1.0f;
         Debug.Log($"[Dev UI] TimeScale: {Time.timeScale}");
+    }
+
+    public void OnBtnAddWeaponClicked()
+    {
+        if (CheckPlayer())
+        {
+            Debug.Log("[Dev UI] Add Weapon Test (Dummy)");
+            playerManager.AddEquipment(testWeapon); 
+        }
+    }
+
+    public void OnBtnAddItemClicked()
+    {
+        if (CheckPlayer())
+        {
+            Debug.Log("[Dev UI] Add Consumable Item Test (Dummy)");
+            // ItemData testItem = ScriptableObject.CreateInstance<ItemData>();
+            // playerManager.AddItem(testItem);
+        }
     }
     #endregion
 

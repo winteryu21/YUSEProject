@@ -37,14 +37,18 @@ public class PlayerManager : MonoBehaviour
 
     //위치
     public Vector2 Player_Position =>transform.position;
+
+    // (Sprint 2 추가) 바라보는 방향 (기본값: 오른쪽)
+    public Vector2 FacingDirection { get; private set; } = Vector2.right;
     #endregion
     
     #region Serialized Fields
     [Header("Dependencies (Required)")]
     [SerializeField]
     private InputManager inputManager;
+    // [SerializeField] private ItemManager itemManager; // Removed
     [SerializeField]
-    private ItemManager itemManager;
+    private InventoryManager inventoryManager; // (Sprint 2) 장비 관리자 추가
     
     [Header("Stats")]
     [SerializeField]
@@ -77,14 +81,38 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.LogError("PlayerManager: InputManager가 인스펙터에 할당되지 않았습니다!");
         }
-        // ItemManager의 초기화를 PlayerManager가 대신 처리합니다.
-        if (itemManager != null && inputManager != null)
+        
+        // InventoryManager 초기화
+        if (inventoryManager != null)
         {
-            itemManager.Initialize(inputManager);
+            inventoryManager.Initialize(this);
         }
         else
         {
-            Debug.LogError("PlayerManager: ItemManager 또는 InputManager 참조가 없어 ItemManager를 초기화할 수 없습니다.");
+            // 인스펙터에 할당되지 않았을 경우, 같은 오브젝트에서 찾아보기
+            inventoryManager = GetComponent<InventoryManager>();
+            if (inventoryManager != null)
+            {
+                inventoryManager.Initialize(this);
+            }
+            else
+            {
+                Debug.LogWarning("PlayerManager: InventoryManager가 할당되지 않았습니다.");
+            }
+        }
+
+        // InputManager 이벤트 구독
+        if (inputManager != null)
+        {
+            inputManager.GetItemUseInput += HandleItemUseInput;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (inputManager != null)
+        {
+            inputManager.GetItemUseInput -= HandleItemUseInput;
         }
     }
 
@@ -96,6 +124,12 @@ public class PlayerManager : MonoBehaviour
             inputManager.HorizontalInputValue,
             inputManager.VerticalInputValue
         );
+
+        // 입력이 있을 때만 바라보는 방향 업데이트
+        if (moveInput.sqrMagnitude > 0.01f)
+        {
+            FacingDirection = moveInput.normalized;
+        }
 
         Move(moveInput);
     }
@@ -109,9 +143,11 @@ public class PlayerManager : MonoBehaviour
         {
             return;
         }
-        if (itemManager != null)
+        
+        // 슬롯 번호는 1, 2, 3 ... -> 인덱스 0, 1, 2 ...
+        if (inventoryManager != null)
         {
-            itemManager.ActivateItem(slotNumber);
+            inventoryManager.UseItem(slotNumber - 1);
         }
     }
     #endregion
@@ -167,11 +203,23 @@ public class PlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 장비 선택 시 호출되는 더미 함수
+    /// 장비 획득 시 호출
     /// </summary>
-    public void AddEquipment(Equipment data)
+    public void AddEquipment(EquipmentData data)
     {
+        if (inventoryManager != null)
+        {
+            Debug.Log("PlayerManager.AddEquipment(EquipmentData data) 진입");
+            inventoryManager.Add(data);
+        }
+    }
 
+    public void AddItem(ItemData data)
+    {
+        if (inventoryManager != null)
+        {
+            inventoryManager.Add(data);
+        }
     }
 
     // public void SpendGold(int amount) { ... }

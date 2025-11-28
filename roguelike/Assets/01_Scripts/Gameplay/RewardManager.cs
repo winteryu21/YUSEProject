@@ -126,7 +126,7 @@ public class RewardManager : MonoBehaviour
     /// <summary>
     /// 보상 선택 시 호출
     /// </summary>
-    public void OnRewardSelected(Equipment data) 
+    public void OnRewardSelected(EquipmentData data) 
     {
 
         // 선택된 장비 착용
