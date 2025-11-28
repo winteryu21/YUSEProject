@@ -19,9 +19,9 @@ public class RewardManager : MonoBehaviour
     #endregion
 
     #region Private Fields
-    private int maxRerollCount = 2; // 테스트용 임시 최대 리롤 횟수
-    private int rerollCount = 0;
-    private int rerollPrice = 100; // 테스트용 임시 리롤 비용
+    private int _maxRerollCount = 2; // 테스트용 임시 최대 리롤 횟수
+    private int _rerollCount = 0;
+    private int _rerollPrice = 100; // 테스트용 임시 리롤 비용
     #endregion
 
     #region Unity LifeCycle
@@ -142,7 +142,7 @@ public void GenerateRewards()
         playerManager.AddEquipment(data);
 
         // 리롤 횟수 초기화
-        rerollCount = 0;
+        _rerollCount = 0;
 
         OnRewardProcessFinished?.Invoke();
     }
@@ -153,23 +153,23 @@ public void GenerateRewards()
     /// </summary>
     public void OnRerollPressed() 
     {
-        if (playerManager.Gold < rerollPrice)
+        if (playerManager.Gold < _rerollPrice)
         {
             Debug.Log("RewardManager: 골드 부족 -> 리롤 불가");
             return;
         }
 
-        if (rerollCount >= maxRerollCount)
+        if (_rerollCount >= _maxRerollCount)
         {
             Debug.Log("RewardManager: 리롤 횟수 부족 -> 리롤 불가");
             return;
         }
 
         // 골드 차감
-        playerManager.GainGold(-rerollPrice);
+        playerManager.GainGold(-_rerollPrice);
 
         // 리롤 횟수 증가
-        rerollCount++;
+        _rerollCount++;
 
         // 보상 다시 생성
         GenerateRewards();
@@ -184,7 +184,7 @@ public void GenerateRewards()
         playerManager.GainExp(100); // 테스트용 임시 경험치 보상
 
         // 리롤 횟수 초기화
-        rerollCount = 0;
+        _rerollCount = 0;
 
         OnRewardProcessFinished?.Invoke();
     }
