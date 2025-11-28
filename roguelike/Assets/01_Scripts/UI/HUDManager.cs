@@ -8,6 +8,7 @@ public class HUDManager : MonoBehaviour
     #region Serialized Fields
     [Header("Dependencies")]
     [SerializeField] private PlayerManager playerManager; // 인스펙터에서 연결
+    [SerializeField] private InventoryManager inventoryManager; // 획득한 장비와 아이템 띄우기 위한 참조
 
     [Header("UI Elements (S1)")]
     [SerializeField] private Slider hpSlider; // (D-1.a)

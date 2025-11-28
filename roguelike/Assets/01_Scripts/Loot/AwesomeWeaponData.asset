@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b1ed293a6377ad4384f7815c3184602, type: 3}
+  m_Name: AwesomeWeaponData
+  m_EditorClassIdentifier: 
+  _equipmentName: Awesome
+  _description: test
+  _icon: {fileID: 762804792, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  _maxLevel: 5
+  _prefab: {fileID: 0}
+  _baseDamage: 10
+  _baseCooldown: 1
+  _projectileSpeed: 10
+  _penetration: 1
