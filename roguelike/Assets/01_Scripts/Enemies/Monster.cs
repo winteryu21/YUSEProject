@@ -16,7 +16,10 @@ public abstract class Monster : MonoBehaviour
 
     #region Private Fields
 
+  
     protected float _currentHp;
+
+ 
     protected Transform _target; // 플레이어(추적 대상)
 
 
@@ -27,6 +30,12 @@ public abstract class Monster : MonoBehaviour
 
 
     #region Unity LifeCycle
+
+    protected virtual void Awake()
+    {
+        
+    }
+
 
     protected virtual void Start()
     {
@@ -40,7 +49,9 @@ public abstract class Monster : MonoBehaviour
         {
             // 매 프레임 타겟 방향으로 이동
             Move(_target.position);
+            
         }
+
 
         //TakeDamage(1); //풀링 테스트 시 순식간에 죽길래 비활성화 하고 테스트 했습니다.
     }
@@ -116,4 +127,5 @@ public abstract class Monster : MonoBehaviour
     }
 
     #endregion
+   
 }

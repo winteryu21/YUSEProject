@@ -33,6 +33,7 @@ public class PlayerManager : MonoBehaviour
     // (Sprint 2 추가) 레벨, 경험치, 골드 프로퍼티
     public int Level { get => _level; }
     public int CurrentExp { get => _currentExp; }
+    public int MaxExp { get => _maxExp; }
     public int Gold { get => _gold; }
 
     //위치
@@ -58,6 +59,8 @@ public class PlayerManager : MonoBehaviour
     #region Private Fields
     private Rigidbody2D _rb;
     private float _currentHp;
+    private Animator _anime;
+    private SpriteRenderer _sprite;
     
     // --- Sprint 2에서 사용할 변수 ---
     private int _level = 1;
@@ -70,8 +73,15 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _anime = GetComponent<Animator>();
+        _sprite = GetComponent<SpriteRenderer>();
     }
 
+
+    private void Update()
+    {
+        Player_Animation();
+    }
     private void Start()
     {
         _currentHp = stats.MaxHp;
@@ -253,6 +263,35 @@ public class PlayerManager : MonoBehaviour
         gameObject.SetActive(false); 
     }
     
+
+    private void Player_Animation()
+    {
+        float input_x = inputManager.HorizontalInputValue;
+        float input_y=inputManager.VerticalInputValue;
+
+        bool isMoving;
+        Vector2 moveinput = new Vector2(input_x, input_y);
+
+        if(moveinput!=Vector2.zero)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
+        }
+
+
+            _anime.SetBool("IsWalk", isMoving);
+
+        if(input_x!=0)
+        {
+            _sprite.flipX = input_x > 0;
+        }
+
+    }
+
+
     /// <summary>
     /// (S2, B-1.b) 레벨 업 처리
     /// </summary>

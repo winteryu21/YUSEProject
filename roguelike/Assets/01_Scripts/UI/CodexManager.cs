@@ -4,15 +4,11 @@ using System.Collections;
 
 public class CodexManager : MonoBehaviour
 {
+
     [Header("panel")]
     [SerializeField] private GameObject[] allCodexPanels;
 
     
-
-
-
-
-
 
     #region Button Action
 

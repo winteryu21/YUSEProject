@@ -161,7 +161,7 @@ public class HUDManager : MonoBehaviour
     /// <summary>
     /// HUD 초기화
     /// </summary>
-    public void InitHUD()
+    private void InitHUD()
     {
         // HP
         UpdateHpBar(playerManager.CurrentHp, playerManager.CurrentHp);

@@ -15,7 +15,7 @@ public class NormalMonster : Monster
         );
 
         // 스프라이트 좌우 반전 로직
-        if (targetPosition.x < transform.position.x)
+        if (targetPosition.x > transform.position.x)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
