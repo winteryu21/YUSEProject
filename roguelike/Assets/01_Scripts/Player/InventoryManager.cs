@@ -13,8 +13,8 @@ public class InventoryManager : MonoBehaviour
 {
     #region Serialized Fields
 
-    [Header("Dependencies")] [SerializeField]
-    private PlayerManager _playerManager;
+    [Header("Dependencies")] 
+    [SerializeField] private PlayerManager playerManager;
 
     [SerializeField] private Transform weaponParent; // 무기가 생성될 부모 트랜스폼 (보통 플레이어 자신)
 
@@ -43,6 +43,7 @@ public class InventoryManager : MonoBehaviour
 
     public List<Weapon> Weapons => _weapons;
     public List<Passive> Passives => _passives;
+    public List<Item> Consumables => _consumables;
 
     #endregion
 
@@ -50,10 +51,20 @@ public class InventoryManager : MonoBehaviour
 
     public void Initialize(PlayerManager player)
     {
-        _playerManager = player;
+        playerManager = player;
         if (weaponParent == null)
         {
             weaponParent = player.transform;
+        }
+    }
+
+    private void Update()
+    {
+        // 소모품 쿨다운 갱신
+        float deltaTime = Time.deltaTime;
+        foreach (var item in _consumables)
+        {
+            item.UpdateCooldown(deltaTime);
         }
     }
 
@@ -111,101 +122,6 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
-    #endregion
-
-    #region Private Methods
-
-    private void AddWeapon(WeaponData data)
-    {
-        if (_weapons.Count >= maxWeaponSlots)
-        {
-            Debug.Log("Weapon slots are full!");
-            return;
-        }
-
-        // 프리팹 생성
-        GameObject go = Instantiate(data.Prefab, weaponParent);
-        go.name = data.EquipmentName;
-
-        Weapon weapon = go.GetComponent<Weapon>();
-        if (weapon == null)
-        {
-            Debug.LogError($"Weapon prefab {data.name} does not have a Weapon component!");
-            Destroy(go);
-            return;
-        }
-
-        weapon.Initialize(_playerManager, data);
-        _weapons.Add(weapon);
-
-        Debug.Log($"Added Weapon: {data.EquipmentName}");
-        OnInventoryChanged?.Invoke();
-    }
-
-    private void AddPassive(PassiveData data)
-    {
-        if (_passives.Count >= maxPassiveSlots)
-        {
-            Debug.Log("Passive slots are full!");
-            return;
-        }
-
-        // 프리팹 생성
-        GameObject go = new GameObject(data.EquipmentName);
-        go.transform.SetParent(transform); // InventoryManager 아래에 둠
-
-        Passive passive = go.AddComponent<Passive>();
-        passive.Initialize(_playerManager, data);
-        _passives.Add(passive);
-
-        Debug.Log($"Added Passive: {data.EquipmentName}");
-        OnInventoryChanged?.Invoke();
-    }
-
-    private void AddConsumable(ItemData data)
-    {
-        // 이미 보유 중인 소모품은 나오지 않음
-
-        // 이미 있는 아이템인지 확인
-        foreach (var item in _consumables)
-        {
-            if (item.Data == data)
-            {
-                Debug.Log($"이미 보유 중인 아이템!");
-                return;
-            }
-        }
-
-        if (_consumables.Count >= maxItemSlots)
-        {
-            Debug.Log("Consumable slots are full!");
-            return;
-        }
-
-        GameObject go = Instantiate(data.Prefab, transform); // InventoryManager 자식으로 생성
-        go.name = data.ItemName;
-
-        Item newItem = go.GetComponent<Item>();
-        if (newItem == null)
-        {
-            Debug.LogError($"Item prefab {data.name} does not have an Item component!");
-            Destroy(go);
-            return;
-        }
-
-        newItem.Initialize(data);
-        _consumables.Add(newItem);
-
-        Debug.Log($"Added Consumable: {data.ItemName}");
-        OnInventoryChanged?.Invoke();
-    }
-
-    #endregion
-
-    #region Public Methods (Consumables)
-
-// [InventoryManager.cs] 내부
-
     public void UseItem(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= _consumables.Count) return;
@@ -235,13 +151,90 @@ public class InventoryManager : MonoBehaviour
 
     #endregion
 
-    private void Update()
+    #region Private Methods
+
+    private void AddWeapon(WeaponData data)
     {
-        // 소모품 쿨다운 갱신
-        float deltaTime = Time.deltaTime;
+        if (_weapons.Count >= maxWeaponSlots)
+        {
+            Debug.Log("Weapon slots are full!");
+            return;
+        }
+
+        // 프리팹 생성
+        GameObject go = Instantiate(data.Prefab, weaponParent);
+        go.name = data.EquipmentName;
+
+        Weapon weapon = go.GetComponent<Weapon>();
+        if (weapon == null)
+        {
+            Debug.LogError($"Weapon prefab {data.name} does not have a Weapon component!");
+            Destroy(go);
+            return;
+        }
+
+        weapon.Initialize(playerManager, data);
+        _weapons.Add(weapon);
+
+        Debug.Log($"Added Weapon: {data.EquipmentName}");
+        OnInventoryChanged?.Invoke();
+    }
+
+    private void AddPassive(PassiveData data)
+    {
+        if (_passives.Count >= maxPassiveSlots)
+        {
+            Debug.Log("Passive slots are full!");
+            return;
+        }
+
+        // 프리팹 생성
+        GameObject go = new GameObject(data.EquipmentName);
+        go.transform.SetParent(weaponParent); // PlayerManager 아래에 둠
+
+        Passive passive = go.AddComponent<Passive>();
+        passive.Initialize(playerManager, data);
+        _passives.Add(passive);
+
+        Debug.Log($"Added Passive: {data.EquipmentName}");
+        OnInventoryChanged?.Invoke();
+    }
+
+    private void AddConsumable(ItemData data)
+    {
+        // 이미 있는 아이템인지 확인
         foreach (var item in _consumables)
         {
-            item.UpdateCooldown(deltaTime);
+            if (item.Data == data)
+            {
+                Debug.Log($"이미 보유 중인 아이템!");
+                return;
+            }
         }
+
+        if (_consumables.Count >= maxItemSlots)
+        {
+            Debug.Log("Consumable slots are full!");
+            return;
+        }
+
+        GameObject go = Instantiate(data.Prefab, weaponParent); // PlayerManager 자식으로 생성
+        go.name = data.ItemName;
+
+        Item newItem = go.GetComponent<Item>();
+        if (newItem == null)
+        {
+            Debug.LogError($"Item prefab {data.name} does not have an Item component!");
+            Destroy(go);
+            return;
+        }
+
+        newItem.Initialize(data);
+        _consumables.Add(newItem);
+
+        Debug.Log($"Added Consumable: {data.ItemName}");
+        OnInventoryChanged?.Invoke();
     }
+
+    #endregion
 }
